@@ -49,12 +49,7 @@ export const useAuth = ({
 
     axiosInstance
       .post("/register", props)
-      .then((res) => {
-        typeof localStorage !== "undefined"
-          ? localStorage?.setItem("token", res.data.token)
-          : null;
-        axiosInstance.defaults.headers["Authorization"] =
-          "Bearer " + res.data.token;
+      .then(() => {
         mutate();
         router.push("/");
       })
@@ -78,12 +73,7 @@ export const useAuth = ({
 
     axiosInstance
       .post("/login", props)
-      .then((res) => {
-        typeof localStorage !== "undefined"
-          ? localStorage?.setItem("token", res.data.token)
-          : null;
-        axiosInstance.defaults.headers["Authorization"] =
-          "Bearer " + res.data.token;
+      .then(() => {
         mutate();
         router.push("/");
       })
@@ -101,10 +91,7 @@ export const useAuth = ({
 
   const logout = async () => {
     if (!error) {
-      axiosInstance.defaults.headers["Authorization"] = "";
-      typeof localStorage !== "undefined"
-        ? localStorage.removeItem("token")
-        : null;
+      await axiosInstance.post("/logout").then(() => mutate());
     }
     window.location.pathname = "/login";
   };
@@ -141,7 +128,7 @@ export const useAuth = ({
       router.push(redirectIfAuthenticated);
     if (middleware === "auth" && error) logout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, error, redirectIfAuthenticated, middleware]);
+  }, [user, error]);
 
   return {
     user,
