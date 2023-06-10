@@ -39,8 +39,11 @@ export const useAuth = ({
       })
   );
 
+  const csrf = () => axiosInstance.get("/sanctum/csrf-cookie");
+
   const register = async ({ setErrors, ...props }: any) => {
     setLoading(true);
+    await csrf();
 
     setErrors([]);
 
@@ -69,6 +72,7 @@ export const useAuth = ({
 
   const login = async ({ setErrors, ...props }: any) => {
     setLoading(true);
+    await csrf();
 
     setErrors([]);
 
@@ -107,6 +111,7 @@ export const useAuth = ({
 
   const updateUserPreferences = async ({ setErrors, ...props }: any) => {
     setLoading(true);
+    await csrf();
 
     setErrors([]);
 

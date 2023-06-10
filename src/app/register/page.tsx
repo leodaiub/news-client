@@ -120,6 +120,7 @@ export default function Home() {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
+                <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
               </FormControl>
             </Stack>
           </CardBody>
